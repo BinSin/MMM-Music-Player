@@ -28,10 +28,36 @@ module.exports = NodeHelper.create({
 	var self = this;
 	
 	if (notification == "INIT_PLAYER") {
-		self.initPlayer(payload);
+		self.initPlayer();
 	}
 	else if (notification == "PLAY_MUSIC") {
-		
+		if(payload == "HAPPY") {
+			player.addTrack("");
+		}
+		else if(payload == "SAD") {
+			player.addTrack("");
+		}
+		else if(payload == "ANGRY") {
+			player.addTrack("");
+		}
+		else if(payload == "CONFUSED") {
+			player.addTrack("");
+		}
+		else if(payload == "DISGUSTED") {
+			player.addTrack("");
+		}
+		else if(payload == "SURPRISED") {
+			player.addTrack("");
+		}
+		else if(payload == "CALM") {
+			player.addTrack("");
+		}
+		else {
+			
+		}	
+	}
+	else if (notification == "RESET_PLAYER_LISTS") {
+		this.player.removeAllTracks();
 	}
 	else if (notification == "STOP_MUSIC") {
 		this.player.stop();

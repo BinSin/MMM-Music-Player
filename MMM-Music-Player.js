@@ -18,7 +18,11 @@ Module.register("MMM-Music-Player", {
 	if(sender) {
 		if (notification == "PLAY_MUSIC_RECOGNITION") {
 			console.log("play music start~");
-			self.sendSocketNotification("PLAY_MUSIC", self.config);
+			self.sendSocketNotification("PLAY_MUSIC", payload);
+		}
+		if (notification == "RESET_PLAYER_LIST") {
+			console.log("reset player list");
+			self.sendSocketNotification("RESET_PLAYER_LISTS", payload);
 		}
 	}
   },
