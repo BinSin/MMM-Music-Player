@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/BinSin/MMM-Music-Player#readme",
   "dependencies": {
-    "musicplayer-api": "^0.2.0"
+    "child-process-promise": "^2.2.1"
   }
 }

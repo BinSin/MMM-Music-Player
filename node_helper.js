@@ -4,69 +4,36 @@
 'use strict';
 
 var NodeHelper = require("node_helper");
-
 var path = require("path");
-
 var fs = require('fs');
-
-var MusicPlayer = require('musicplayer-api').MusicPlayer
-var player = null;
+var exec = require("child-process-promise").exec;
 
 module.exports = NodeHelper.create({
+
 
   start: function() {
 	var self = this;
 	console.log("Starting node helper for: " + this.name);
-	self.initPlayer();
-  },
-
-  initPlayer: function() {
-	this.player = new MusicPlayer()
   },
 
   socketNotificationReceived: function(notification, payload) {
 	var self = this;
 	
-	if (notification == "INIT_PLAYER") {
-		self.initPlayer();
-	}
-	else if (notification == "PLAY_MUSIC") {
-		if(payload == "HAPPY") {
-			player.addTrack("");
-		}
-		else if(payload == "SAD") {
-			player.addTrack("");
-		}
-		else if(payload == "ANGRY") {
-			player.addTrack("");
-		}
-		else if(payload == "CONFUSED") {
-			player.addTrack("");
-		}
-		else if(payload == "DISGUSTED") {
-			player.addTrack("");
-		}
-		else if(payload == "SURPRISED") {
-			player.addTrack("");
-		}
-		else if(payload == "CALM") {
-			player.addTrack("");
-		}
-		else {
-			
-		}	
-	}
-	else if (notification == "RESET_PLAYER_LISTS") {
-		this.player.removeAllTracks();
+	if (notification == "PLAY_MUSIC") {
+		var music = fs.readdirSync(path.resolve(global.root_path + "/Music/" + payload));
+		var random = Math.floor(Math.random() * music.length);
+
+		fs.writeFile(path.resolve(global.root_path + "/installers/omxplayer.sh"), "omxplayer ~/MagicMirror/Music/" + payload + "/" + music[random], "utf-8");
+		setTimeout(function() {
+			exec("pm2 start ~/MagicMirror/installers/omxplayer.sh");
+		}, 2000);
+		self.sendSocketNoficiation("SUCCESS_" + payload + "_MUSIC", music[random]);
 	}
 	else if (notification == "STOP_MUSIC") {
-		this.player.stop();
-	}
-	else if (notification == "PAUSE_MUSIC") {
-		this.player.pause();
+		exec("pm2 stop omxplayer");
 	}
 	else if (notification == "PLAY_NEXT") {
-		this.player.playNext();
+		
 	}
 	 
   },
